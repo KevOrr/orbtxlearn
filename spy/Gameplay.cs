@@ -1,20 +1,19 @@
 public class Gameplay {
     public void Initialize() {
         OrbtxLearnSpy.Initialize();
-        OrbtxLearnSpy.Reconnect();
     }
 
     public void EndRound() {
         // ...
         gameOn = false;
-        OrbtxLearnSpy.SendLine("playing=0");
+        OrbtxLearnSpy.UpdateInGame("true");
         // ...
     }
 
     public void ResetRound() {
         // ...
         gameOn = true;
-        OrbtxLearnSpy.SendLine("playing=1");
+        OrbtxLearnSpy.UpdateInGame("false");
         // ...
     }
 
@@ -22,10 +21,17 @@ public class Gameplay {
         // ...
         if (/*...*/) {
             pause = true;
-            OrbtxLearnSpy.SendLine("paused=1");
+            OrbtxLearnSpy.UpdatePaused("true");
         } else if (/*...*/) {
             pause = false;
-            OrbtxLearnSpy.SendLine("paused=0");
+            OrbtxLearnSpy.UpdatePaused("false");
+        }
+
+        // ...
+
+        if (/*...*/) {
+            score++;
+            OrbtxLearnSpy.UpdateScore(Int.ToString(score));
         }
     }
 }

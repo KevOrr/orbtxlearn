@@ -1,116 +1,77 @@
 using System;
-using System.Net.Sockets;
+using System.Net;
+using Systems.Collections.Specialized;
 
 public class OrbtxLearnSpy {
-    public static const String DEFAULT_HOST = "localhost";
-    public static final int DEFAULT_PORT = 2600;
+    public static const String DEFAULT_URL = "http://localhost:2600/api";
 
-    private static String host = DEFAULT_HOST;
-    private static int port = DEFAULT_PORT;
-    private static TcpClient client = null;
-    private static NetworkStream stream = null;
+    private static String url = DEFAULT_URL;
+    private static readonly HttpClient client = new HttpClient();
 
-    public static bool inGame = false;
-    public static bool paused = false;
-    public static int score = 0;
+    private static Dictionary<String, String> dict = new Dectionary<String, String> {
+        {"inGame", "false"},
+        {"paused", "false"},
+        {"score", "0"}
+    };
+
+    public static void Initialize() {
+        try {
+            url = GetEnvironmentVariable("ORBTXLEARN_URL");
+        } catch (ArgumentNullException e) {
+            url = DEFAULT_URL;
+        }
+
+        Console.WriteLine("OrbtxLearn: setting address to {0}", url);
+        Reconnect();
+
+        dict["inGame"] = "false";
+        dict["paused"] = "false";
+        dict["score"] = "0";
+    }
+
+    public static void UpdateInGame(String it) {
+        dict["inGame"] = it;
+        SendStatus();
+    }
 
     public static void UpdateInGame(bool it) {
-        inGame = it;
+        dict["inGame"] = it ? "true" : "false";
+        SendStatus();
+    }
+
+    public static void UpdatePaused(String it) {
+        dict["paused"] = it;
         SendStatus();
     }
 
     public static void UpdatePaused(bool it) {
-        paused = it;
+        dict["paused"] = it ? "true" : "false";
+        SendStatus();
+    }
+
+    public static void UpdateScore(String it) {
+        dict["score"] = it;
         SendStatus();
     }
 
     public static void UpdateScore(int it) {
-        score = it;
+        dict["score"] = Int.ToString(it);
         SendStatus();
     }
 
-    private static void SendStatus() {
-        TrySend(String.Format("{{inGame: {0}, paused: {1}, score: {2}}}\n",
-                              inGame ? "true" : "false", paused ? "true" : "false"));
+    // .NET 4.0+
+    public static void SendStatus() {
+        client.PostAsync(url, new FormUrlEncodedContent(dict));
     }
 
-    public static void Initialize() {
-        try {
-            port = Int32.Parse(GetEnvironmentVariable("ORBTXLEARN_PORT"));
-        } catch (ArgumentNullException e) {
-            port = DEFAULT_PORT;
-        }
+    // .NET 2.0+
+    public static void SendStatus() {
+        using (var client = new WebClient()) {
+            var values = new NameValueCollection();
+            foreach(var kv in dict)
+                values.Add(kv.Key.ToString(), kv.Value.ToString());
 
-        try {
-            host = GetEnvironmentVariable("ORBTXLEARN_HOSTNAME");
-        } catch (ArgumentNullException e) {
-            host = DEFAULT_HOST;
-        }
-
-        Console.WriteLine("OrbtxLearn: setting address to tcp://{0}:{1}", host, port);
-        Reconnect();
-
-        inGame = false;
-        paused = false;
-        score = 0;
-    }
-
-    public static void Reconnect() {
-        if (client == null || stream == null)
-            Disconnect();
-
-        Console.WriteLine("OrbtxLearn: (re)connecting to tcp://{0}:{1}", host, port);
-        client = new TcpClient(host, port);
-
-        Console.WriteLine("OrbtxLearn: opening NetworkStream...");
-        try {
-            stream = client.getStream();
-        } catch (Exception e) {
-            Console.WriteLine("OrbtxLearn: exception in Reconnect(): {0}", e);
-            Disconnect();
-        }
-    }
-
-    public static void Disconnect() {
-        if (stream != null) {
-            try {
-                stream.close();
-            } catch (Exception e) {
-                Console.WriteLine("OrbtxLearn: exception in Disconnect(): {0}", e);
-            }
-            stream = null;
-        }
-
-        if (client != null) {
-            try {
-                client.close();
-            } catch (Exception e) {
-                Console.WriteLine("OrbtxLearn: exception in Disconnect(): {0}", e);
-            }
-            client = null;
-        }
-    }
-
-    public static void SendLine(String s) {
-        TrySend(s + "\n");
-    }
-
-    public static void Send(String s) {
-        TrySend(s);
-    }
-
-    public static void SendTextIntLine(String s, int a) {
-        TrySend(String.Format("{0}{1}\n", s, a));
-    }
-
-    private static void TrySend(String s) {
-        for (uint i=0; i<5; i++) {
-            try {
-                stream.Write(e);
-                return;
-            } catch (Exception e) {
-                Reconnect();
-            }
+            client.UploadValuesAsync(new Uri(url), values);
         }
     }
 }
