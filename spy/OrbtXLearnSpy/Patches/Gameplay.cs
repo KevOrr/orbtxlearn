@@ -3,44 +3,44 @@
 namespace OrbtXLearnSpy.Patches {
 
     [ModifiesType("Gameplay")]
-    class PatchedGameplay : Gameplay {
+    class Gameplay : global::Gameplay {
 
         [DuplicatesBody("Start")]
-        private void orig_Start() { }
+        private void Orig_Start() { }
 
         [DuplicatesBody("Update")]
-        private void orig_Update() { }
+        private void Orig_Update() { }
 
         [DuplicatesBody("RoundEnd")]
-        public void orig_RoundEnd() { }
+        public void Orig_RoundEnd() { }
 
         [DuplicatesBody("RoundReset")]
-        public void orig_RoundReset() { }
+        public void Orig_RoundReset() { }
 
 
         [ModifiesMember("Start")]
-        private void mod_Start() {
+        private void Mod_Start() {
             Spy.Connect();
             Spy.SendEvent("start");
-            orig_Start();
+            Orig_Start();
         }
 
         [ModifiesMember("Update")]
-        private void mod_Update() {
-            orig_Update();
+        private void Mod_Update() {
+            Orig_Update();
             Spy.OnUpdate(this);
         }
 
         [ModifiesMember("RoundEnd")]
-        public void mod_RoundEnd() {
+        public void Mod_RoundEnd() {
             Spy.SendEvent("round_end");
-            orig_RoundEnd();
+            Orig_RoundEnd();
         }
 
         [ModifiesMember("RoundReset")]
-        public void mod_RoundReset() {
+        public void Mod_RoundReset() {
             Spy.SendEvent("round_reset");
-            orig_RoundReset();
+            Orig_RoundReset();
         }
     }
 }
