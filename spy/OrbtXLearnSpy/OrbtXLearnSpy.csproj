@@ -7,7 +7,7 @@
     <ProjectGuid>{5333CA51-3EBB-4AE1-8170-ED77D1516A72}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>OrbtXLearnSpy</RootNamespace>
-    <AssemblyName>OrbtXLearnSpy</AssemblyName>
+    <AssemblyName>OrbtXLearnSpy.pw</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
