@@ -22,7 +22,7 @@ instance on the fly.
    of using your actual version of the game
 2. Start `PatchworkLauncher.exe`
 3. Click `Change Game Folder`
-4. Navigate to your OrbtXL instalation
+4. Navigate to your OrbtXL installation
 5. Click `Active Mods`
 6. If `OrbtXLearn Spy` isn't already listed, click `Add` and navigate to `OrbtXLearnSpy.pw.dll`
 7. To test that Patchwork is able to apply the patches, hit `Test Run`
