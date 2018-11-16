@@ -35,9 +35,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Patchwork.Attributes">
-      <HintPath>..\..\..\..\Downloads\PatchworkLauncher-0.9.1\Patchwork.Attributes.dll</HintPath>
+    <Reference Include="Patchwork.Attributes, Version=0.8.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Patchwork.Attributes.0.8.5.0\lib\net20\Patchwork.Attributes.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

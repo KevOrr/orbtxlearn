@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Patchwork.AutoPatching;
+using Patchwork.Attributes;
 
 [AppInfoFactoryAttribute]
 class OrbtXLAppInfo : AppInfoFactory {
@@ -11,8 +11,6 @@ class OrbtXLAppInfo : AppInfoFactory {
             BaseDirectory = dir,
             Executable = new FileInfo(Path.Combine(dir.FullName, "orbtxl.exe"))
         };
-
-        ai.IconLocation = ai.Executable;
 
         using (var sr = new StreamReader(Path.Combine(Path.Combine(dir.FullName, "orbtxl_Data"), "app.info"))) {
             ai.AppVersion = sr.ReadLine().Trim();
