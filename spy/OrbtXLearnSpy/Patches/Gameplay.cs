@@ -1,46 +1,57 @@
-﻿using Patchwork;
+﻿using Patchwork.Attributes;
 
 namespace OrbtXLearnSpy.Patches {
 
     [ModifiesType("Gameplay")]
     class Gameplay : global::Gameplay {
 
+        // For some reason, pause is private, but we need to access it from Spy
+        [ModifiesAccessibility("pause")]
+        new public bool pause;
+
+        [NewMember]
+        private Spy spy;
+
+        [NewMember]
         [DuplicatesBody("Start")]
-        private void Orig_Start() { }
+        public void Orig_Start() { }
 
+        [NewMember]
         [DuplicatesBody("Update")]
-        private void Orig_Update() { }
+        public void Orig_Update() { }
 
+        [NewMember]
         [DuplicatesBody("RoundEnd")]
         public void Orig_RoundEnd() { }
 
+        [NewMember]
         [DuplicatesBody("RoundReset")]
         public void Orig_RoundReset() { }
 
 
         [ModifiesMember("Start")]
         private void Mod_Start() {
-            Spy.Connect();
-            Spy.SendEvent("start");
+            spy = new Spy(this);
             Orig_Start();
+            spy.OnStart();
         }
 
         [ModifiesMember("Update")]
         private void Mod_Update() {
             Orig_Update();
-            Spy.OnUpdate(this);
+            spy.OnUpdate();
         }
 
         [ModifiesMember("RoundEnd")]
         public void Mod_RoundEnd() {
-            Spy.SendEvent("round_end");
             Orig_RoundEnd();
+            spy.OnRoundEnd();
         }
 
         [ModifiesMember("RoundReset")]
         public void Mod_RoundReset() {
-            Spy.SendEvent("round_reset");
             Orig_RoundReset();
+            spy.OnRoundReset();
         }
     }
 }
