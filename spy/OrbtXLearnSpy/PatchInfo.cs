@@ -1,4 +1,4 @@
-﻿using Patchwork.Attributes;
+﻿using Patchwork.AutoPatching;
 using System.IO;
 
 namespace OrbtXLearnSpy {

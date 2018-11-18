@@ -1,4 +1,4 @@
-﻿using Patchwork.Attributes;
+﻿using Patchwork;
 using System;
 using System.IO;
 using System.Net.Sockets;
@@ -110,6 +110,7 @@ namespace OrbtXLearnSpy.Patches {
 
     [NewType]
     public class CommandReader {
+        [NewType]
         public delegate void CallbackDelegate(string line);
 
         private const int READ_BUFFER_SIZE = 1024;

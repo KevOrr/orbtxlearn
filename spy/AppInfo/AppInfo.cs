@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Patchwork.Attributes;
+using Patchwork.AutoPatching;
 
 [AppInfoFactoryAttribute]
 class OrbtXLAppInfo : AppInfoFactory {

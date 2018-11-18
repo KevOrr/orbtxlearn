@@ -4,26 +4,57 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbtXLearnSpy", "OrbtXLearnSpy\OrbtXLearnSpy.csproj", "{5333CA51-3EBB-4AE1-8170-ED77D1516A72}"
+	ProjectSection(ProjectDependencies) = postProject
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E} = {47DCBAF7-F2E6-486C-8887-FA41C271B74E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInfo", "AppInfo\AppInfo.csproj", "{52AF6435-5009-438E-A3A1-5AD2C570A801}"
+	ProjectSection(ProjectDependencies) = postProject
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E} = {47DCBAF7-F2E6-486C-8887-FA41C271B74E}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{9CBFB69A-2C85-469E-BC32-70B0312C54B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patchwork.Attributes", "Libraries\Patchwork\Patchwork.Attributes\Patchwork.Attributes.csproj", "{47DCBAF7-F2E6-486C-8887-FA41C271B74E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		PrepareEnvironment|Any CPU = PrepareEnvironment|Any CPU
+		Publish|Any CPU = Publish|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.PrepareEnvironment|Any CPU.ActiveCfg = Release|Any CPU
+		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.PrepareEnvironment|Any CPU.Build.0 = Release|Any CPU
+		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.Publish|Any CPU.Build.0 = Release|Any CPU
 		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5333CA51-3EBB-4AE1-8170-ED77D1516A72}.Release|Any CPU.Build.0 = Release|Any CPU
 		{52AF6435-5009-438E-A3A1-5AD2C570A801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52AF6435-5009-438E-A3A1-5AD2C570A801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52AF6435-5009-438E-A3A1-5AD2C570A801}.PrepareEnvironment|Any CPU.ActiveCfg = Release|Any CPU
+		{52AF6435-5009-438E-A3A1-5AD2C570A801}.PrepareEnvironment|Any CPU.Build.0 = Release|Any CPU
+		{52AF6435-5009-438E-A3A1-5AD2C570A801}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{52AF6435-5009-438E-A3A1-5AD2C570A801}.Publish|Any CPU.Build.0 = Release|Any CPU
 		{52AF6435-5009-438E-A3A1-5AD2C570A801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52AF6435-5009-438E-A3A1-5AD2C570A801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.PrepareEnvironment|Any CPU.ActiveCfg = PrepareEnvironment|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.PrepareEnvironment|Any CPU.Build.0 = PrepareEnvironment|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.Publish|Any CPU.ActiveCfg = Publish|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.Publish|Any CPU.Build.0 = Publish|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{47DCBAF7-F2E6-486C-8887-FA41C271B74E} = {9CBFB69A-2C85-469E-BC32-70B0312C54B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5FF5607-02C5-4B34-BD5C-0D9D5F4C026A}
