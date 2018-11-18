@@ -3,7 +3,7 @@
 namespace OrbtXLearnSpy.Patches {
 
     [ModifiesType("Gameplay")]
-    class Gameplay : global::Gameplay {
+    public class Gameplay : global::Gameplay {
 
         // For some reason, pause is private, but we need to access it from Spy
         [ModifiesAccessibility("pause")]
@@ -27,7 +27,6 @@ namespace OrbtXLearnSpy.Patches {
         [NewMember]
         [DuplicatesBody("RoundReset")]
         public void Orig_RoundReset() { }
-
 
         [ModifiesMember("Start")]
         private void Mod_Start() {

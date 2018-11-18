@@ -7,11 +7,12 @@ using System.Text;
 namespace OrbtXLearnSpy.Patches {
 
     [NewType]
-    class Spy {
+    public class Spy {
         private const string HOST = "127.0.0.1";
         private const int PORT = 2600;
 
         private readonly Gameplay gp;
+
         private StreamWriter log = new StreamWriter(@"orbtxlearn.spy.log", true, Encoding.UTF8) {
             AutoFlush = true
         };
@@ -22,6 +23,7 @@ namespace OrbtXLearnSpy.Patches {
 
         private int lastScore = 0;
         private int lastDir = 0; // 0: initial, -1: CCW, 1: CW
+
         // private bool lastPause = false;
         private bool lastGameOn = true;
 
@@ -42,7 +44,6 @@ namespace OrbtXLearnSpy.Patches {
             log.WriteLine("Game start");
             SendEvent("start");
             SendEvent("gameon");
-
         }
 
         public void OnUpdate() {
@@ -110,6 +111,7 @@ namespace OrbtXLearnSpy.Patches {
 
     [NewType]
     public class CommandReader {
+
         [NewType]
         public delegate void CallbackDelegate(string line);
 

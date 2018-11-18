@@ -2,8 +2,10 @@
 using System.IO;
 
 namespace OrbtXLearnSpy {
+
     [PatchInfoAttribute]
-    class PatchInfo : IPatchInfo {
+    public class PatchInfo : IPatchInfo {
+
         private string Combine(string first, params string[] rest) {
             string accum = first;
             foreach (var part in rest)

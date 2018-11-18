@@ -1,9 +1,11 @@
-﻿using System.IO;
-using Patchwork.AutoPatching;
+﻿using Patchwork.AutoPatching;
+using System.IO;
 
 [AppInfoFactoryAttribute]
-class OrbtXLAppInfo : AppInfoFactory {
-    public OrbtXLAppInfo() { }
+public class OrbtXLAppInfo : AppInfoFactory {
+
+    public OrbtXLAppInfo() {
+    }
 
     override public AppInfo CreateInfo(DirectoryInfo dir) {
         var ai = new AppInfo {
