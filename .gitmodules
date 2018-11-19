@@ -1,0 +1,3 @@
+[submodule "Libraries/Patchwork"]
+	path = Libraries/Patchwork
+	url = https://github.com/GregRos/Patchworks
