@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace OrbtXLearnSpy.Patches {
 
@@ -19,7 +20,7 @@ namespace OrbtXLearnSpy.Patches {
 
         private TcpClient tcp;
         private NetworkStream tcpStream;
-        private CommandReader commandReader;
+        private StreamReader tcpStreamReader;
 
         private int lastScore = 0;
         private int lastDir = 0; // 0: initial, -1: CCW, 1: CW
@@ -37,7 +38,11 @@ namespace OrbtXLearnSpy.Patches {
             tcpStream = tcp.GetStream();
             log.WriteLine("Connected");
 
-            commandReader = new CommandReader(tcpStream, new CommandReader.CallbackDelegate(ReadMessageCallback));
+            tcpStreamReader = new StreamReader(tcpStream, Encoding.UTF8);
+            new Thread(() => {
+                while (tcpStreamReader.Peek() >= 0)
+                    ReadMessageCallback(tcpStreamReader.ReadLine());
+            }).Start();
         }
 
         public void OnStart() {
@@ -105,47 +110,7 @@ namespace OrbtXLearnSpy.Patches {
 
         private void ReadMessageCallback(string line) {
             if (line.ToLower() == "command:restart")
-                gp.RoundReset();
-        }
-    }
-
-    [NewType]
-    public class CommandReader {
-
-        [NewType]
-        public delegate void CallbackDelegate(string line);
-
-        private const int READ_BUFFER_SIZE = 1024;
-
-        private Stream stream;
-        private byte[] buffer;
-        private CallbackDelegate callback;
-
-        public string Line { get; private set; }
-
-        public CommandReader(Stream stream, CallbackDelegate callback) {
-            this.stream = stream;
-            this.buffer = new byte[READ_BUFFER_SIZE];
-            this.callback = callback;
-            this.Line = "";
-        }
-
-        public void Start() {
-            stream.BeginRead(buffer, 0, READ_BUFFER_SIZE, new AsyncCallback(ReadReady), this);
-        }
-
-        private static void ReadReady(IAsyncResult iar) {
-            var commandReader = (CommandReader)iar.AsyncState;
-            int bytesRead = commandReader.stream.EndRead(iar);
-
-            int eolIndex = Array.IndexOf(commandReader.buffer, (char)'\n', 0, bytesRead);
-            if (eolIndex >= 0) {
-                string line = commandReader.Line + Encoding.ASCII.GetString(commandReader.buffer, 0, eolIndex);
-                commandReader.Line = "";
-                commandReader.stream.BeginRead(commandReader.buffer, 0, READ_BUFFER_SIZE,
-                    new AsyncCallback(ReadReady), commandReader);
-                commandReader.callback(line);
-            }
+                gp.restartRequest = true;
         }
     }
 }

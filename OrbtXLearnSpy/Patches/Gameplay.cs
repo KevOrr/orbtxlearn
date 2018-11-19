@@ -7,10 +7,13 @@ namespace OrbtXLearnSpy.Patches {
 
         // For some reason, pause is private, but we need to access it from Spy
         [ModifiesAccessibility("pause")]
-        new public bool pause;
+        public bool pause;
 
         [NewMember]
         private Spy spy;
+
+        [NewMember]
+        public bool restartRequest = false;
 
         [NewMember]
         [DuplicatesBody("Start")]
@@ -37,8 +40,13 @@ namespace OrbtXLearnSpy.Patches {
 
         [ModifiesMember("Update")]
         private void Mod_Update() {
-            Orig_Update();
-            spy.OnUpdate();
+            if (restartRequest) {
+                Mod_RoundReset();
+                restartRequest = false;
+            } else {
+                Orig_Update();
+                spy.OnUpdate();
+            }
         }
 
         [ModifiesMember("RoundEnd")]
