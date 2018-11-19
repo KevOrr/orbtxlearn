@@ -1,19 +1,25 @@
-# OrbtXLearn
+# OrbtXLearn Spy
 
-### Injected Spy
-
-The [spy][spy] is in charge of monitoring game state, such as the current score and whether the game
+The spy is in charge of monitoring game state, such as the current score and whether the game
 is still being played or if it has been lost. It uses [Patchwork][patchwork] to patch an OrbtXL
 instance on the fly.
 
 
 ### Building
 
-1. Grab a copy of [Patchwork][patchwork] TODO: Patchwork needs some pull requests to get this
-   project working
-2. Open `spy/spy.sln` and build the `AppInfo` and `OrbtXLearnSpy` projects
-3. Place `AppInfo.dll` in the same folder as `PatchworkLauncher.exe`, and note where
-   `OrbtXLearnSpy.pw.dll` is
+*NOTE*: Right now, building the included version of Patchwork creates an endless stream of
+terrifying errors, so in the meantime, grab a separate copy of `Patchwork` and build it according to
+the instructions there.
+
+1. Clone this repo with `git clone --recursive`
+2. Open `spy.sln`
+3. If necessary, fix paths to referenced assemblies in the `OrbtXLearnSpy` project.
+	`Assembly-Csharp.dll` can be found in `<orbtxl>/orbtxl_Data/Managed`. `UnityEngine.CoreModule`
+	needs to be from a 2018.2 version of Unity (I think? Not actually sure why I think this now. If
+	it works with other versions, let me know)
+4. Build the `AppInfo` and `Libraries/Patchwork/PatchworkLauncher` projects
+5. Copy `AppInfo.dll` in the same folder as `PatchworkLauncher.exe` (TODO: make this a post-build task)
+6. Note the path of `OrbtXLearnSpy.pw.dll`
 
 
 ### Launching the game with patches
@@ -28,6 +34,8 @@ instance on the fly.
 7. To test that Patchwork is able to apply the patches, hit `Test Run`
 8. If all is well (which it probably isn't), go ahead and try `Launch with Mods`
 
+If there are errors when you attempt to apply the patch, open an issue here first. It's likely to
+be an error in this repo, even though the error message might not seem to indicate that.
 
 
 [spy]: spy/
