@@ -8,7 +8,7 @@ instance on the fly.
 ### Building
 
 *NOTE*: Right now, building the included version of PatchworkLauncher creates an endless stream of
-terrifying errors, so in the meantime, grab [a separate copy of Patchwork](patchwork-releases) and
+terrifying errors, so in the meantime, grab [a separate copy of Patchwork][patchwork-releases] and
 build it according to the instructions there.
 
 1. Clone this repo with `git clone --recursive`
