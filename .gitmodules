@@ -1,4 +1,4 @@
 [submodule "Libraries/Patchwork"]
 	path = Libraries/Patchwork
-	url = https://github.com/KevOrr/Patchworks
+	url = https://github.com/KevOrr/Patchwork
     branch = fix/filename_case_typo
