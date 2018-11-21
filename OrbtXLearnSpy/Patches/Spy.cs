@@ -11,6 +11,7 @@ namespace OrbtXLearnSpy.Patches {
     public class Spy {
         private const string HOST = "127.0.0.1";
         private const int PORT = 2600;
+        private const int READ_BUFFER_LENGTH = 1024;
 
         private readonly Gameplay gp;
 
@@ -20,12 +21,9 @@ namespace OrbtXLearnSpy.Patches {
 
         private TcpClient tcp;
         private NetworkStream tcpStream;
-        private StreamReader tcpStreamReader;
 
         private int lastScore = 0;
         private int lastDir = 0; // 0: initial, -1: CCW, 1: CW
-
-        // private bool lastPause = false;
         private bool lastGameOn = true;
 
         public Spy(Gameplay gp) {
@@ -38,11 +36,25 @@ namespace OrbtXLearnSpy.Patches {
             tcpStream = tcp.GetStream();
             log.WriteLine("Connected");
 
-            tcpStreamReader = new StreamReader(tcpStream, Encoding.UTF8);
             new Thread(() => {
-                while (tcpStreamReader.Peek() >= 0)
-                    ReadMessageCallback(tcpStreamReader.ReadLine());
-            }).Start();
+                byte[] buffer = new byte[READ_BUFFER_LENGTH];
+                int offset = 0;
+                while (true) {
+                    if (tcpStream.DataAvailable) {
+                        tcpStream.Read(buffer, offset, 1);
+                        if (buffer[offset] == (char)'\n') {
+                            ReadMessageCallback(Encoding.ASCII.GetString(buffer, 0, offset));
+                            offset = 0;
+                        } else {
+                            offset++;
+                        }
+                    } else {
+                        Thread.Sleep(500);
+                    }
+                }
+            }) {
+                IsBackground = true
+            }.Start();
         }
 
         public void OnStart() {
@@ -72,13 +84,6 @@ namespace OrbtXLearnSpy.Patches {
                 lastScore = Gameplay.playerScore;
             }
 
-            // This causes errors in Gameplay
-            // TODO find out why
-            // if (gp.pause != lastPause) {
-            //     Send(gp.pause ? "event:pause" : "event:unpause");
-            //     lastPause = gp.pause;
-            // }
-
             if (Gameplay.gameOn != lastGameOn) {
                 SendEvent(Gameplay.gameOn ? "gameon" : "gameoff");
                 lastGameOn = Gameplay.gameOn;
@@ -102,15 +107,17 @@ namespace OrbtXLearnSpy.Patches {
         public void SendEvent(String msg) => Send("event:" + msg);
 
         private void Send(string msg) {
-            // log.WriteLine("Sending: " + msg);
+            log.WriteLine("Sending: " + msg);
             byte[] bytes = Encoding.UTF8.GetBytes(msg + "\n");
             tcpStream.BeginWrite(bytes, 0, bytes.Length,
                 new AsyncCallback((IAsyncResult iar) => { }), tcpStream);
         }
 
         private void ReadMessageCallback(string line) {
-            if (line.ToLower() == "command:restart")
+            if (line.ToLower() == "command:restart") {
+                log.WriteLine("Requesting restart");
                 gp.restartRequest = true;
+            }
         }
     }
 }
